@@ -1,0 +1,59 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Task Manager Full Validation</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+      body { font-family: sans-serif; padding: 2rem; background: #f9f9f9; }
+      input, button { margin: 0.25rem 0; padding: 0.5rem; }
+      .field { margin-bottom: 0.75rem; }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      const { useState } = React;
+
+      function App() {
+        const [cadastroForm, setCadastroForm] = useState({ usuario: '', email: '', senha: '', repetirSenha: '' });
+
+        const validarSenhaForte = senha => /^(?=.*[A-Z])(?=.*\d).{8,}$/.test(senha);
+
+        const handleCadastroChange = (e) => {
+          const { name, value } = e.target;
+          setCadastroForm({ ...cadastroForm, [name]: value });
+        };
+
+        return (
+          <div style={{ maxWidth: '400px', margin: 'auto' }}>
+            <h2>Cadastro</h2>
+            <div className="field">
+              <input name="usuario" placeholder="Nome de usuário" value={cadastroForm.usuario} onChange={handleCadastroChange} />
+            </div>
+            <div className="field">
+              <input name="email" type="email" placeholder="E-mail" value={cadastroForm.email} onChange={handleCadastroChange} />
+            </div>
+            <div className="field">
+              <input name="senha" type="password" placeholder="Senha" value={cadastroForm.senha} onChange={handleCadastroChange} />
+            </div>
+            <ul style={{ fontSize: '0.9rem' }}>
+              <li style={{ color: cadastroForm.senha.length >= 8 ? 'green' : 'red' }}>• 8 caracteres</li>
+              <li style={{ color: /[A-Z]/.test(cadastroForm.senha) ? 'green' : 'red' }}>• 1 letra maiúscula</li>
+              <li style={{ color: /\d/.test(cadastroForm.senha) ? 'green' : 'red' }}>• 1 número</li>
+            </ul>
+            <div className="field">
+              <input name="repetirSenha" type="password" placeholder="Confirmar senha" value={cadastroForm.repetirSenha} onChange={handleCadastroChange} />
+            </div>
+            <button onClick={() => alert("Simulação de cadastro executada")}>Cadastrar</button>
+          </div>
+        );
+      }
+
+      ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+    </script>
+  </body>
+</html>
